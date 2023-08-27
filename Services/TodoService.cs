@@ -18,10 +18,15 @@ public class TodoService
     {
         if(_context.Todos != null)
         {
-            return await _context.Todos.FindAsync(id);
+            var todo =  await _context.Todos.FindAsync(id);
+
+            if (todo is null)
+                return new NotFoundResult();
+
+            return todo;
         }
 
-        return new NoContentResult();
+        return new NotFoundResult();
     }
 
     public async Task<IList<Todo>> GetAll()
